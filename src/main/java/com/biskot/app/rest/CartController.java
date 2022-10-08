@@ -14,15 +14,18 @@ public class CartController {
     CartService cartService;
 
 
-@GetMapping("/{cartId}")
-public Cart getCart(@PathVariable Long cartId){
+    @GetMapping("/{cartId}")
+    public Cart getCart(@PathVariable Long cartId){
     return cartService.getCart(cartId);
-}
-@PutMapping("/{cartId}/items")
-public Cart addToCart(@PathVariable Long cartId, @RequestBody Long  productId, @RequestBody int quantity){
-    Cart cart= cartService.addItemToCart(cartId, productId, quantity );
-    return cart;
-}
+    }
+
+
+    @RequestMapping(value = "/{cartId}/items", method=RequestMethod.PUT, produces = "application/json")
+    public Cart addToCart(@PathVariable Long cartId, @RequestBody Long  productId, int quantity){
+        return cartService.addItemToCart(cartId, productId, quantity );
+    }
+
+
 
 
 }

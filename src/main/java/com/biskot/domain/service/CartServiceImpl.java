@@ -37,13 +37,14 @@ public class CartServiceImpl implements CartService {
         prod.setProductLabel(prod.getProductLabel());
         prod.setQuantity_in_stock(prod.getQuantity_in_stock());
         prod.setUnitPrice(prod.getUnitPrice());
+        if (prod.getQuantity() <= maxItemsCart ){
+            throw new ResourceAccessException("A cart cannot contain more than 3 different products");
+        }else {
+            prod.setQuantity(prod.getQuantity());
+        }
         productRepository.save(prod);
         listProd.add(prod);
         itemList.setLinePrice(prod.getUnitPrice());
-        if (itemList.getQuantity() <= maxItemsCart ){
-            throw new ResourceAccessException("A cart cannot contain more than 3 different products");
-        }
-        itemList.setQuantity(itemList.getQuantity());
         itemList.setProducts(listProd);
         itemRepository.save(itemList);
         listItems.add(itemList);
@@ -51,7 +52,16 @@ public class CartServiceImpl implements CartService {
         if (cart.getTotalPrice() <= maxTotal ){
             throw new ResourceAccessException("Total price of the cart should not exceed 100 euros");
         }
-        cart.setTotalPrice(itemList.getLinePrice()* itemList.getQuantity());
+        float total = 0;
+        for(Product product : listProd
+        ) {
+            float result= product.getUnitPrice() * product.getQuantity();
+            total= total + result;
+
+        }
+        cart.setTotalPrice(total);
+        cartRepository.save(cart);
+
     }
 
     @Override
@@ -62,31 +72,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart addItemToCart(long cartId, long productId, int quantityToAdd) {
-        // TODO: to be implemented
-            Cart cart= getCart(cartId);
-            Product prod= productRepository.findByProductId(productId);
-            List<Product> listProd= new ArrayList<>();
-            List<Item> listItems=new ArrayList<>();
-            Item itemList= new Item();
-            prod.setProductLabel(prod.getProductLabel());
-            prod.setQuantity_in_stock(prod.getQuantity_in_stock());
-            prod.setUnitPrice(prod.getUnitPrice());
-            productRepository.save(prod);
-
-            listProd.add(prod);
-
-            if (itemList.getQuantity() <= quantityToAdd ){
-                throw new ResourceAccessException("A cart cannot contain more than 3 different products");
-            }
-            itemList.setQuantity(quantityToAdd);
-            itemList.setLinePrice(prod.getUnitPrice());
-            itemList.setProducts(listProd);
-            itemRepository.save(itemList);
-            listItems.add(itemList);
-            cart.setItems(listItems);
-        return cartRepository.save(cart);
-
+        Cart cart=getCart(cartId);
+        Product prod= productRepository.findByProductId(productId);
+        Item itm= new Item();
+        prod.setItem(itm);
+        prod.setQuantity(quantityToAdd);
+        List<Product> listProd= new ArrayList<>();
+        listProd.add(prod);
+        List<Item> listItems=new ArrayList<>();
+        itm.setProducts(listProd);
+        cart.setItems(listItems);
+        cartRepository.save(cart);
+        return cart;
 
     }
+
     }
 

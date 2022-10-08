@@ -1,6 +1,8 @@
 package com.biskot.domain.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,26 +13,31 @@ public class Product {
     private Long productId;
     private String productLabel;
     private float unitPrice;
+    private int quantity;
+    @JsonIgnore
     private int quantity_in_stock;
 
     @ManyToOne
+    @JsonIgnore
     private Item item;
 
     //    constructors
     public Product() {
     }
 
-    public Product(Long productId, String productLabel, float unitPrice, int quantity_in_stock) {
+    public Product(Long productId, String productLabel, float unitPrice,int quantity, int quantity_in_stock) {
         this.productId = productId;
         this.productLabel = productLabel;
         this.unitPrice = unitPrice;
+        this.quantity = quantity;
         this.quantity_in_stock = quantity_in_stock;
     }
 
-    public Product(Long productId, String productLabel, float unitPrice, int quantity_in_stock, Item item) {
+    public Product(Long productId, String productLabel, float unitPrice,int quantity, int quantity_in_stock, Item item) {
         this.productId = productId;
         this.productLabel = productLabel;
         this.unitPrice = unitPrice;
+        this.quantity = quantity;
         this.quantity_in_stock = quantity_in_stock;
         this.item = item;
     }
@@ -75,12 +82,21 @@ public class Product {
         this.item = item;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
                 "productId=" + productId +
                 ", productLabel='" + productLabel + '\'' +
                 ", unitPrice=" + unitPrice +
+                ", quantity=" + quantity +
                 ", quantity_in_stock=" + quantity_in_stock +
                 ", item=" + item +
                 '}';

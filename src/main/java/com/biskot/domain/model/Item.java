@@ -1,5 +1,7 @@
 package com.biskot.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
@@ -10,9 +12,11 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long item_id;
+    @JsonIgnore
     private float linePrice;
-    private int quantity;
+
     @OneToMany
     private Collection<Product> products;
 
@@ -20,16 +24,15 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long item_id, float linePrice, int quantity) {
+    public Item(Long item_id, float linePrice) {
         this.item_id = item_id;
         this.linePrice = linePrice;
-        this.quantity = quantity;
+
     }
 
-    public Item(Long item_id, float linePrice, int quantity, Collection<Product> products) {
+    public Item(Long item_id, float linePrice, Collection<Product> products) {
         this.item_id = item_id;
         this.linePrice = linePrice;
-        this.quantity = quantity;
         this.products = products;
     }
 
@@ -57,20 +60,7 @@ public class Item {
         this.products = products;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "item_id=" + item_id +
-                ", linePrice=" + linePrice +
-                ", products=" + products +
-                '}';
-    }
+
 }

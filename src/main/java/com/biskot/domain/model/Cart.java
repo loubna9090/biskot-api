@@ -9,7 +9,6 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private float totalPrice;
     @OneToMany
     private List<Item> items;

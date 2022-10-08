@@ -16,6 +16,13 @@ public class ProductResponse {
     @JsonProperty("quantity_in_stock")
     private int quantityInStock;
 
+    public ProductResponse(long id, String label, double unitPrice, int quantityInStock) {
+        this.id = id;
+        this.label = label;
+        this.unitPrice = unitPrice;
+        this.quantityInStock = quantityInStock;
+    }
+
     public long getId() {
         return id;
     }

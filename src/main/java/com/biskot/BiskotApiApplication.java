@@ -35,12 +35,21 @@ public class BiskotApiApplication implements CommandLineRunner {
 		Product prod=new Product();
 		prod.setProductLabel("adidas deo");
 		prod.setUnitPrice(5);
+		prod.setQuantity(2);
 		prod.setQuantity_in_stock(100);
 		productRepository.save(prod);
+
+		Product prod2=new Product();
+		prod2.setProductLabel("reebok");
+		prod2.setUnitPrice(8);
+		prod2.setQuantity(2);
+		prod2.setQuantity_in_stock(100);
+		productRepository.save(prod2);
 
 		Product prod1=new Product();
 		prod1.setProductLabel("nike ");
 		prod1.setUnitPrice(10);
+		prod1.setQuantity(3);
 		prod1.setQuantity_in_stock(100);
 		productRepository.save(prod1);
 
@@ -49,7 +58,6 @@ public class BiskotApiApplication implements CommandLineRunner {
 		listProds.add(prod1);
 		Item item= new Item();
 		item.setProducts(listProds);
-		item.setQuantity(1);
 		item.setLinePrice(prod.getUnitPrice());
 		itemRepository.save(item);
 
@@ -57,7 +65,14 @@ public class BiskotApiApplication implements CommandLineRunner {
 		listItems.add(item);
 		Cart cart =new Cart();
 		cart.setItems(listItems);
-		cart.setTotalPrice(item.getLinePrice()* item.getQuantity());
+		float total = 0;
+		for(Product product : listProds
+		) {
+			float result= product.getUnitPrice() * product.getQuantity();
+			total= total + result;
+
+		}
+		cart.setTotalPrice(total);
 		cartRepository.save(cart);
 
 
