@@ -17,8 +17,9 @@ public class Product {
     @JsonIgnore
     private int quantity_in_stock;
 
-    @ManyToOne
-    @JsonIgnore
+
+//    @JsonIgnore
+   @ManyToOne(cascade = {CascadeType.ALL})
     private Item item;
 
     //    constructors

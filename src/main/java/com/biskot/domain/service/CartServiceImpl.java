@@ -1,5 +1,6 @@
 package com.biskot.domain.service;
 
+import com.biskot.domain.DTO.ProductDto;
 import com.biskot.domain.model.Cart;
 import com.biskot.domain.model.Item;
 import com.biskot.domain.model.Product;
@@ -70,20 +71,21 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findById(cartId).get();
     }
 
+
+
     @Override
-    public Cart addItemToCart(long cartId, long productId, int quantityToAdd) {
+    public Cart addItemToCart(long cartId, ProductDto productDto) {
         Cart cart=getCart(cartId);
-        Product prod= productRepository.findByProductId(productId);
+        Product prod= productRepository.findByProductId(productDto.getProductId());
         Item itm= new Item();
         prod.setItem(itm);
-        prod.setQuantity(quantityToAdd);
+        prod.setQuantity(productDto.getQuantity());
         List<Product> listProd= new ArrayList<>();
         listProd.add(prod);
         List<Item> listItems=new ArrayList<>();
         itm.setProducts(listProd);
         cart.setItems(listItems);
-        cartRepository.save(cart);
-        return cart;
+        return cartRepository.save(cart);
 
     }
 

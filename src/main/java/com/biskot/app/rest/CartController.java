@@ -1,5 +1,6 @@
 package com.biskot.app.rest;
 
+import com.biskot.domain.DTO.ProductDto;
 import com.biskot.domain.model.Cart;
 import com.biskot.domain.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class CartController {
 
 
     @RequestMapping(value = "/{cartId}/items", method=RequestMethod.PUT, produces = "application/json")
-    public Cart addToCart(@PathVariable Long cartId, @RequestBody Long  productId, int quantity){
-        return cartService.addItemToCart(cartId, productId, quantity );
+    public Cart addToCart(@PathVariable Long cartId, @RequestBody ProductDto productDto){
+        return cartService.addItemToCart(cartId, productDto );
     }
 
 
